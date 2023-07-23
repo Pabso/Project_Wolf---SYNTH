@@ -1,6 +1,6 @@
 import time as t
 import serial
-import --- as image_ai
+import subprocess
 
 ERROR = False
 max_freq_in = 130
@@ -33,7 +33,7 @@ while 1:
         return data
 
     freq_in = write_read()
-    
+    sign = 0
 
     #-------------- Set arrays -------------------
 
@@ -41,7 +41,7 @@ while 1:
 
     if sign == 0:
         neg_list.append(in_word)
-    elif pos == 1:
+    elif sign == 1:
         pos_list.append(in_word)
     else:
         print("ERROR -- Failed to determine sign")
@@ -49,8 +49,9 @@ while 1:
         break
 
     # ------------ Send to AI -----------------
+    prompt = "a phtograph containing" + pos_list + "but not " + neg_list
 
-    image_ai(pos_list, neg_list)
+    subprocess.call("python", "scripts/txt2img.py", "--prompt ", prompt, "--plms " )
 
 
     #Refreshing image checker --- Set at 12 words maximum

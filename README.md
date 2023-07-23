@@ -11,4 +11,8 @@ Need to install
 
  Set Interpreter and environment in VS Code 
  https://code.visualstudio.com/docs/python/environments
+
+ Installation instructions for Stable Diffusion
+ https://www.assemblyai.com/blog/how-to-run-stable-diffusion-locally-to-generate-images/
+ 
  
