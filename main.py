@@ -2,9 +2,20 @@ import time as t
 import serial
 import subprocess
 
+def rounder_x(number, interval):
+    output = 0
+
+    if (number%interval) >= interval/2:
+        output = number + (interval-(number%interval))
+    else:
+        output = number - (number%interval)
+
+    return output
+
+
 ERROR = False
-max_freq_in = 130
-interval = 10
+max_freq_in = 10000
+interval = 500
 
 neg_list = []
 pos_list = []
@@ -30,14 +41,17 @@ while 1:
 
     def write_read():
         data = arduino.readline()
+        data.split()
         return data
 
-    freq_in = write_read()
-    sign = 0
+
+    freq_in = write_read()[0]
+    sign = write_read()[1]
 
     #-------------- Set arrays -------------------
 
-    in_word = word_bank[(freq_in/interval)]
+
+    in_word = word_bank[(rounder_x(freq_in, interval)/interval)]
 
     if sign == 0:
         neg_list.append(in_word)
@@ -59,4 +73,3 @@ while 1:
     if (len(neg_list) + len(pos_list)) >= 12:
         neg_list = []
         pos_list = []
-

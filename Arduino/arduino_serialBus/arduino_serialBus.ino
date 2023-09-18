@@ -1,4 +1,4 @@
-int x;
+char* x;
 
 void setup() {
   Serial.begin(115200);
@@ -7,6 +7,6 @@ void setup() {
 
 void loop() {
   while (!Serial.available());
-  x = Serial.readString().toInt();
+  x = Serial.readString();
   Serial.print(x);
 }
