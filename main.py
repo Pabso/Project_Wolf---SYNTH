@@ -38,15 +38,17 @@ while 1:
     t.sleep(4)
     
     # take inputs from max live --- EXAMPLE CODE -------------
-
-    def write_read():
+    def write_data():
         data = arduino.readline()
-        data.split()
+        data = data.decode()
+        data = data.rstrip("\r\n")
+        data = data.split(" ")
         return data
+    
+    print(write_data())
 
-
-    freq_in = write_read()[0]
-    sign = write_read()[1]
+    freq_in = write_data()[0]
+    sign = write_data()[1]
 
     #-------------- Set arrays -------------------
 

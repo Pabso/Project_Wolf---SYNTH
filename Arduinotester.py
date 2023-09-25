@@ -1,15 +1,26 @@
+import serial as s
 import time as t
-import serial
 import subprocess
 
-arduino = serial.Serial(port='/dev/ttyACM0', baudrate=9600, timeout=.1)
+arduino = s.Serial(port="COM3", baudrate=9600, timeout=.1)
 
-string = b'765 1'
+string = '252 1\n'
 next = False
 
 while(1):
-    arduino.write(string)
+    arduino.write(string.encode())
 
-    t.sleep(8)
+    t.sleep(2)
 
-    print(arduino.read())
+    #print(arduino.readline())
+
+    def write_data():
+        data = arduino.readline()
+        data = data.decode()
+        data = data.rstrip("\r\n")
+        data = data.split(" ")
+        return data
+    
+    print(write_data())
+
+    
