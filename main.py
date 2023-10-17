@@ -36,14 +36,14 @@ prompt_list = [] #Loaded Prompts
 
 
 # --------------- Establish UDP Connection ------------------
-sock = socket.socket(socket.AF_INET, # Internet
-                     socket.SOCK_DGRAM) # UDP
-sock.bind((UDP_IP, UDP_PORT))
+# sock = socket.socket(socket.AF_INET, # Internet
+#                      socket.SOCK_DGRAM) # UDP
+# sock.bind((UDP_IP, UDP_PORT))
 
 # --------------- Read Word file and load into array-------------------
 with open(Word_Prompts_PATH,"r") as openfileobject:
     for line in openfileobject:
-        prompts.append(line)
+        prompts.append(line.replace('\n', ''))
 
 openfileobject.close()
 
@@ -96,19 +96,18 @@ while ERROR == False:
 
         #Load Data into written file till prompt inputs
         for i in range(len(Config_file)):
-            print(type(Config_file[i]))
-            if Config_file[i] == str("prompts_ani"):
+            if (Config_file[i] == "    prompts_ani\n"):
                 print("Configuring Prompts")
 
-                ani_prompt_line = '"animation_prompts":{'
+                ani_prompt_line = '    "animation_prompts":{'
 
                 for pr in range(len(prompt_list)):
                     ani_prompt_line = ani_prompt_line + '"'+ str(FrameCounter) + '"' + ':' + '"' + prompt_list[pr] +'"'
 
-                    if(pr < prompt_list):
+                    if(pr < len(prompt_list)-1):
                         ani_prompt_line = ani_prompt_line + ","
 
-                    FrameCounter =+ PROMPT_FRAMES
+                    FrameCounter = FrameCounter + PROMPT_FRAMES #incremnt Frames
 
                 ani_prompt_line = ani_prompt_line + "},\n"
 
@@ -122,8 +121,9 @@ while ERROR == False:
         Settings_file.close()
 
         #Call AI Generation
-        #subprocess.call("python", "DeforumStableDiffusionLocal/run.py", "--enable_animation_mode", "--settings", '"runSettings.txt"' )
-
+        res = subprocess.run(["python3", "DeforumStableDiffusionLocal/run.py", "--enable_animation_mode", "--settings", "DeforumStableDiffusionLocal/runSettings.txt"], capture_output=True, text=True)
+        print(res.stdout)
+        print(res.stderr)
         #Clean Inputs
         prompt_list = []
 
